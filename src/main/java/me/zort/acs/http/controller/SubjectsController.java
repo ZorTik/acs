@@ -5,7 +5,7 @@ import me.zort.acs.AccessRecordService;
 import me.zort.acs.definitions.DefinitionsService;
 import me.zort.acs.exception.RecordConflict;
 import me.zort.acs.http.dto.SubjectCreateRequest;
-import me.zort.acs.http.dto.SubjectDto;
+import me.zort.acs.http.dto.SubjectWithScopeDetailsDto;
 import me.zort.acs.http.entity.ResponseEntityWrapper;
 import me.zort.acs.util.MessageConstants;
 import me.zort.acs.util.Responses;
@@ -23,10 +23,10 @@ public class SubjectsController {
     private final AccessRecordService accessRecordService;
 
     @GetMapping("/scope/{id}/subject/{subject}")
-    public ResponseEntityWrapper<SubjectDto> getSubject(@PathVariable("id") String id, @PathVariable("subject") String subjectId) {
+    public ResponseEntityWrapper<SubjectWithScopeDetailsDto> getSubject(@PathVariable("id") String id, @PathVariable("subject") String subjectId) {
         return Optional.ofNullable(definitionsService.getScope(id))
                 .map(scope -> Optional.ofNullable(accessRecordService.getSubject(scope, subjectId))
-                        .map(SubjectDto::new)
+                        .map(SubjectWithScopeDetailsDto::new)
                         .map(Responses::ok)
                         .orElse(Responses.notFound("Subject not found")))
                 .orElse(Responses.notFound(MessageConstants.SCOPE_NOT_FOUND));
@@ -47,14 +47,14 @@ public class SubjectsController {
     }
 
     @PostMapping("/subject/create")
-    public ResponseEntityWrapper<SubjectDto> createSubject(@RequestBody SubjectCreateRequest body) {
+    public ResponseEntityWrapper<SubjectWithScopeDetailsDto> createSubject(@RequestBody SubjectCreateRequest body) {
         return Optional.ofNullable(definitionsService.getScope(body.getScope()))
                 .map(scope -> {
                     try {
                         accessRecordService.createSubject(scope, body.getId());
-                        return Responses.<SubjectDto>ok();
+                        return Responses.<SubjectWithScopeDetailsDto>ok();
                     } catch (RecordConflict e) {
-                        return Responses.<SubjectDto>conflict("Subject already exists");
+                        return Responses.<SubjectWithScopeDetailsDto>conflict("Subject already exists");
                     }
                 })
                 .orElse(Responses.notFound(MessageConstants.SCOPE_NOT_FOUND));
