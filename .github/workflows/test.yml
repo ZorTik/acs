@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
       - uses: getong/mariadb-action@v1.11
         with:
           character set server: 'utf8mb4'
