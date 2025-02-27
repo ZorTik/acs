@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1740654877685-1" author="konda">
+        <createTable tableName="rights_entity">
+            <column name="actor_id" type="VARCHAR(191)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_rightsentity"/>
+            </column>
+            <column name="scope_id" type="VARCHAR(191)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_rightsentity"/>
+            </column>
+            <column name="resource_id" type="VARCHAR(191)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_rightsentity"/>
+            </column>
+            <column name="node" type="VARCHAR(191)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_rightsentity"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740654877685-2" author="konda">
+        <createTable tableName="scope_allowed_accessors">
+            <column name="scope_allowed" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_scope_allowed_accessors"/>
+            </column>
+            <column name="scope_allowed_by" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_scope_allowed_accessors"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740654877685-3" author="konda">
+        <createTable tableName="scope_entity">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_scopeentity"/>
+            </column>
+            <column name="subject_based" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740654877685-4" author="konda">
+        <createTable tableName="subject_entity">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_subjectentity"/>
+            </column>
+            <column name="scope_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_subjectentity"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1740654877685-5" author="konda">
+        <addForeignKeyConstraint baseColumnNames="actor_id" baseTableName="rights_entity"
+                                 constraintName="FK_RIGHTSENTITY_ON_ACTORID" referencedColumnNames="id"
+                                 referencedTableName="subject_entity"/>
+    </changeSet>
+    <changeSet id="1740654877685-6" author="konda">
+        <addForeignKeyConstraint baseColumnNames="resource_id" baseTableName="rights_entity"
+                                 constraintName="FK_RIGHTSENTITY_ON_RESOURCEID" referencedColumnNames="id"
+                                 referencedTableName="subject_entity"/>
+    </changeSet>
+    <changeSet id="1740654877685-7" author="konda">
+        <addForeignKeyConstraint baseColumnNames="scope_id" baseTableName="rights_entity"
+                                 constraintName="FK_RIGHTSENTITY_ON_SCOPEID" referencedColumnNames="id"
+                                 referencedTableName="scope_entity"/>
+    </changeSet>
+    <changeSet id="1740654877685-8" author="konda">
+        <addForeignKeyConstraint baseColumnNames="scope_id" baseTableName="subject_entity"
+                                 constraintName="FK_SUBJECTENTITY_ON_SCOPEID" referencedColumnNames="id"
+                                 referencedTableName="scope_entity"/>
+    </changeSet>
+    <changeSet id="1740654877685-9" author="konda">
+        <addForeignKeyConstraint baseColumnNames="scope_allowed" baseTableName="scope_allowed_accessors"
+                                 constraintName="fk_scoallacc_on_scope_allowed" referencedColumnNames="id"
+                                 referencedTableName="scope_entity"/>
+    </changeSet>
+    <changeSet id="1740654877685-10" author="konda">
+        <addForeignKeyConstraint baseColumnNames="scope_allowed_by" baseTableName="scope_allowed_accessors"
+                                 constraintName="fk_scoallacc_on_scope_allowed_by" referencedColumnNames="id"
+                                 referencedTableName="scope_entity"/>
+    </changeSet>
+
+</databaseChangeLog>
