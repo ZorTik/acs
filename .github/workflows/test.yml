@@ -29,6 +29,6 @@ jobs:
       - name: Test
         run: ./gradlew test
         env:
-          DATABASE_URL: mariadb://localhost:3306/acs
+          DATABASE_URL: mariadb://localhost:3306/acs?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
           DATABASE_USER: root
           DATABASE_PASSWORD: test
