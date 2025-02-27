@@ -8,7 +8,7 @@ import me.zort.acs.node.NodeTreeHolder;
 import me.zort.acs.rights.Rights;
 import me.zort.acs.rights.RightsIdentity;
 import me.zort.acs.scope.Scoped;
-import me.zort.acs.source.DefinitionsSource;
+import me.zort.acs.definitions.source.DefinitionsSource;
 import me.zort.acs.subject.Subject;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

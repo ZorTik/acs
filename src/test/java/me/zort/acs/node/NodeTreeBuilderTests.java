@@ -14,7 +14,7 @@ public class NodeTreeBuilderTests {
     @Autowired
     private NodeTreeBuilder nodeTreeBuilder;
     @Autowired
-    private ObjectProvider<BlankNode> nodeObjectProvider;
+    private ObjectProvider<Node> nodeObjectProvider;
 
     @Test
     public void shouldHaveOnlyRootNode() {
@@ -24,15 +24,15 @@ public class NodeTreeBuilderTests {
 
     @Test
     public void shouldHaveOneChild() {
-        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child"));
+        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child", null));
         assertThat(nodeTreeBuilder.getTree().getNodes()).hasSize(1);
         assertThat(nodeTreeBuilder.getTree().getNodes().iterator().next().getValue()).isEqualTo("child");
     }
 
     @Test
     public void shouldHaveTwoChildren() {
-        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child1"));
-        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child2"));
+        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child1", null));
+        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child2", null));
         assertThat(nodeTreeBuilder.getTree().getNodes()).hasSize(2);
 
         Iterator<INode> iterator = nodeTreeBuilder.getTree().getNodes().iterator();
@@ -43,9 +43,9 @@ public class NodeTreeBuilderTests {
 
     @Test
     public void shouldHaveTwoChildrenWithOneInner() {
-        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child1"));
-        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child2"));
-        nodeTreeBuilder.linkNode(new String[] {"", "child2"}, nodeObjectProvider.getObject("child21"));
+        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child1", null));
+        nodeTreeBuilder.linkNode(new String[] {""}, nodeObjectProvider.getObject("child2", null));
+        nodeTreeBuilder.linkNode(new String[] {"", "child2"}, nodeObjectProvider.getObject("child21", null));
         assertThat(nodeTreeBuilder.getTree().getNodes()).hasSize(2);
 
         Iterator<INode> iterator = nodeTreeBuilder.getTree().getNodes().iterator();

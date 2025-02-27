@@ -1,7 +1,7 @@
 package me.zort.acs.node;
 
 import lombok.RequiredArgsConstructor;
-import me.zort.acs.source.DefinitionsSource;
+import me.zort.acs.definitions.source.DefinitionsSource;
 import me.zort.acs.scope.Scope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,15 +9,15 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Service("NodeTreeProvider")
 public class NodeTreeProvider implements NodeTreeHolder {
     private final DefinitionsSource definitionsSource;
     private final ObjectProvider<NodeTreeBuilder> nodeTreeBuilderProvider;
+    private final NodeConverter nodeConverter;
 
     public @Nullable INode getTree(@NotNull Scope scope) {
         Objects.requireNonNull(scope, "Scope cannot be null");
@@ -46,18 +46,22 @@ public class NodeTreeProvider implements NodeTreeHolder {
             builder.linkNode(parentPath, node);
         }
 
-        Set<INode> nodes = definitionsSource.getNodes(subjectId, prefix.length() > 1
+        Set<? extends INodeDefinition> nodes = definitionsSource.getNodes(subjectId, (prefix.length() > 1
                 ? prefix.substring(1)
-                : prefix);
+                : prefix) + (prefix.isEmpty() ? "" : delim));
 
         if (nodes == null) {
             return;
         }
 
-        for (INode node1 : nodes) {
-            String subValue = prefix + delim + node1.getValue();
+        nodes = nodes.stream()
+                .sorted(Comparator.comparingInt(def -> def.getValue().length()))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
 
-            buildSubtree(builder, node1, subjectId, subValue);
+        for (INodeDefinition node1Def : nodes) {
+            INode node1 = nodeConverter.convert(node1Def);
+
+            buildSubtree(builder, node1, subjectId, delim + node1Def.getValue());
         }
     }
 }

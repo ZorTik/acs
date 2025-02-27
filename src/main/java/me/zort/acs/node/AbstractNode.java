@@ -19,6 +19,12 @@ public abstract class AbstractNode implements INode {
 
     @Override
     public void addNode(INode node) {
+        if (nodes
+                .stream()
+                .anyMatch(it -> it.getValue().equals(node.getValue()))) {
+            return;
+        }
+
         nodes.add(node);
     }
 

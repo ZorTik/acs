@@ -10,11 +10,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class NodeTests {
     @Autowired
-    private ObjectProvider<BlankNode> nodeObjectProvider;
+    private ObjectProvider<Node> nodeObjectProvider;
 
     @Test
     public void shouldFindRoot() {
-        INode nodeFound = nodeObjectProvider.getObject("").traverseFind(new String[]{""});
+        INode nodeFound = nodeObjectProvider.getObject("", null).traverseFind(new String[]{""});
 
         assertThat(nodeFound).isNotNull();
         assertThat(nodeFound.getValue()).isEqualTo("");
@@ -22,8 +22,8 @@ public class NodeTests {
 
     @Test
     public void shouldFindChildren() {
-        BlankNode root = nodeObjectProvider.getObject("");
-        BlankNode child = nodeObjectProvider.getObject("child");
+        Node root = nodeObjectProvider.getObject("", null);
+        Node child = nodeObjectProvider.getObject("child", null);
         root.addNode(child);
 
         INode found = root.traverseFind(new String[]{"", "child"});
@@ -32,7 +32,7 @@ public class NodeTests {
         assertThat(found.getValue()).isEqualTo("child");
         assertThat(root.traverseFind(new String[]{"","child.child1"})).isNull();
 
-        child.addNode(nodeObjectProvider.getObject("child1"));
+        child.addNode(nodeObjectProvider.getObject("child1", null));
 
         assertThat(root.traverseFind(new String[]{"","child", "child1"})).isNotNull();
         assertThat(root.traverseFind(new String[]{"","child", "child1"}).getValue()).isEqualTo("child1");
@@ -43,9 +43,9 @@ public class NodeTests {
 
     @Test
     public void shouldReturnRightSize() {
-        BlankNode root = nodeObjectProvider.getObject("");
-        BlankNode child = nodeObjectProvider.getObject("child");
-        BlankNode child2 = nodeObjectProvider.getObject("child2");
+        Node root = nodeObjectProvider.getObject("", null);
+        Node child = nodeObjectProvider.getObject("child", null);
+        Node child2 = nodeObjectProvider.getObject("child2", null);
 
         assertThat(root.size()).isEqualTo(1);
 

@@ -1,9 +1,10 @@
-package me.zort.acs;
+package me.zort.acs.definitions;
 
+import me.zort.acs.AccessRecordService;
+import me.zort.acs.definitions.source.DefinitionsSource;
 import me.zort.acs.node.INode;
 import me.zort.acs.node.NodeTreeHolder;
 import me.zort.acs.scope.Scope;
-import me.zort.acs.source.DefinitionsSource;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

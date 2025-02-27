@@ -1,4 +1,4 @@
-package me.zort.acs;
+package me.zort.acs.definitions;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

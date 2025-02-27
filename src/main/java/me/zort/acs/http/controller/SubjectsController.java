@@ -2,7 +2,7 @@ package me.zort.acs.http.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.zort.acs.AccessRecordService;
-import me.zort.acs.DefinitionsService;
+import me.zort.acs.definitions.DefinitionsService;
 import me.zort.acs.exception.RecordConflict;
 import me.zort.acs.http.dto.SubjectCreateRequest;
 import me.zort.acs.http.dto.SubjectDto;

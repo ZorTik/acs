@@ -1,0 +1,13 @@
+scopes:
+  - id: test
+    subjectBased: true
+    allowedAccessors: [ ]
+    nodes:
+      - value: test1:test11:test111
+        description:
+          title: Test 1
+          subtitle: Test 1 subtitle
+      - value: test2
+        description:
+          title: Test 2
+          subtitle: Test 2 subtitle

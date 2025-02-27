@@ -7,11 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public interface INode extends Comparable<INode> {
-    String getValue();
-
-    @Nullable NodeDescription getDescription();
-
+public interface INode extends INodeDefinition, Comparable<INode> {
     void addNode(INode node);
 
     Set<INode> getNodes();
@@ -63,7 +59,7 @@ public interface INode extends Comparable<INode> {
         if (factoryIfCreate == null) {
             return null;
         } else {
-            INode node = factoryIfCreate.getObject(next);
+            INode node = factoryIfCreate.getObject(next, null);
             addNode(node);
 
             return traverseFind(path, factoryIfCreate);

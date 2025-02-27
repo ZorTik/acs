@@ -1,12 +1,11 @@
 package me.zort.acs.http.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.zort.acs.AccessRecordService;
-import me.zort.acs.DefinitionsService;
+import me.zort.acs.definitions.DefinitionsService;
 import me.zort.acs.http.dto.ScopeDto;
 import me.zort.acs.http.entity.ResponseEntityWrapper;
 import me.zort.acs.node.INode;
-import me.zort.acs.source.DefinitionsSource;
+import me.zort.acs.definitions.source.DefinitionsSource;
 import me.zort.acs.util.MessageConstants;
 import me.zort.acs.util.Responses;
 import org.springframework.beans.factory.annotation.Autowired;

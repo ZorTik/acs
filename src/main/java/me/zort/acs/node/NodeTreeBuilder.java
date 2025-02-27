@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Component
 public class NodeTreeBuilder {
-    private final ObjectProvider<BlankNode> nodeObjectProvider;
+    private final ObjectProvider<Node> nodeObjectProvider;
     @Getter
     private final INode tree;
 
     @Autowired
-    public NodeTreeBuilder(ObjectProvider<BlankNode> nodeObjectProvider) {
+    public NodeTreeBuilder(ObjectProvider<Node> nodeObjectProvider) {
         this.nodeObjectProvider = nodeObjectProvider;
-        this.tree = nodeObjectProvider.getObject("");
+        this.tree = nodeObjectProvider.getObject("", null);
     }
 
     public void linkNode(String[] parentPath, INode node) {
