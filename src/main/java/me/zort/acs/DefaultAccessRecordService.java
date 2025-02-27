@@ -43,10 +43,7 @@ public class DefaultAccessRecordService implements AccessRecordService {
             throw new RecordConflict(subjectId);
         }
 
-        SubjectEntity subjectEntity = new SubjectEntity();
-        subjectEntity.setId(subjectId);
-
-        subjectEntityRepository.save(subjectEntity);
+        subjectEntityRepository.save(new SubjectEntity(subjectId));
     }
 
     @Override

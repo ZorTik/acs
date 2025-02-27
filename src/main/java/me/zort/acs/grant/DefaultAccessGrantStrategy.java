@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class DefaultAccessGrantStrategy implements AccessGrantStrategy {
     private final NodeTreeHolder nodeTreeHolder;
@@ -61,6 +63,9 @@ public class DefaultAccessGrantStrategy implements AccessGrantStrategy {
     }
 
     private void ensureAccess(Rights rights, Scoped target) throws AccessGrantException {
+        Objects.requireNonNull(rights.getActor(), "Actor cannot be null");
+        Objects.requireNonNull(rights.getActor().getId(), "Actor must be a subject with id");
+
         // Ensure that the target subject allows this subject to access its resources
         rights.getActor().ensureAccess(target, rights.getResource() != null);
 

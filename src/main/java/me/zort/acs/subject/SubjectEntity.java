@@ -12,7 +12,8 @@ import java.util.Objects;
 @IdClass(SubjectId.class)
 @Setter
 @ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class SubjectEntity implements Subject {
     @Id
     private String id;
@@ -24,6 +25,10 @@ public class SubjectEntity implements Subject {
     @ManyToOne()
     @JoinColumn(name = "scopeId", referencedColumnName = "id", insertable = false, updatable = false)
     private ScopeEntity scope;
+
+    public SubjectEntity(SubjectId subjectId) {
+        setId(subjectId);
+    }
 
     public void setId(SubjectId subjectId) {
         this.id = subjectId.getId();
