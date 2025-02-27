@@ -1,11 +1,19 @@
 package me.zort.acs.http.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
+@ToString
 public class ResponseWrapper<T> {
-    private final int status;
-    private final String message;
-    private final T data;
+    private int status;
+    private String message;
+    private T data;
 
 }

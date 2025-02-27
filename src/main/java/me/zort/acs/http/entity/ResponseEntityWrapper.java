@@ -10,7 +10,18 @@ public class ResponseEntityWrapper<T> extends ResponseEntity<ResponseWrapper<T>>
         super(new ResponseWrapper<>(status, message, body), HttpStatusCode.valueOf(status));
     }
 
-    public static @NotNull <T> ResponseEntityWrapper<T> okWrapper(T body) {
-        return new ResponseEntityWrapper<>(200, "OK", body);
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other);
     }
 }

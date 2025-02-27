@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,10 +43,14 @@ public class ScopesController {
     }
 
     @GetMapping("/scope/{id}/nodes")
-    public ResponseEntityWrapper<Set<String>> getNodes(@PathVariable("id") String id) {
+    public ResponseEntityWrapper<LinkedHashSet<String>> getNodes(@PathVariable("id") String id) {
         return Optional.ofNullable(definitionsService.getScope(id))
                 .map(definitionsService::getTree)
-                .map(tree -> tree.joinNodeValues(definitionsSource.getNodeDelimiter()))
+                .map(tree -> tree.getNodes()
+                        .stream()
+                        .flatMap(node -> node.joinNodeValues(definitionsSource.getNodeDelimiter()).stream())
+                        .sorted(Comparator.comparingInt(String::length))
+                        .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .map(Responses::ok)
                 .orElse(Responses.notFound(MessageConstants.SCOPE_NOT_FOUND));
     }

@@ -13,6 +13,16 @@ public class NodeConverter {
     private final ObjectProvider<Node> nodeProvider;
     private final DefinitionsSource definitionsSource;
 
+    /**
+     * Converts definition to full node instance.
+     * Reduction strategy is also applied. Suppose we have separator ":":
+     * a:b:c -> c, d:e -> e, g -> g
+     * This way, the node's name is reduced to only the last part of the
+     * path.
+     *
+     * @param nodeDefinition The definition
+     * @return The converted node
+     */
     public @NotNull INode convert(INodeDefinition nodeDefinition) {
         String value = nodeDefinition.getValue();
         String delim = definitionsSource.getNodeDelimiter();
