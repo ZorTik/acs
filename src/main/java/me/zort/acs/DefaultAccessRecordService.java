@@ -54,6 +54,7 @@ public class DefaultAccessRecordService implements AccessRecordService {
             throw new RecordConflict(subjectId);
         }
 
+        rightsEntityRepository.deleteAllByActorIdOrResourceId(subjectId.getId(), subjectId.getId());
         subjectEntityRepository.deleteById(subjectId);
     }
 

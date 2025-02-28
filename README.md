@@ -11,8 +11,7 @@ Supports unlimited amount of resource types and scopes, suitable for projects of
 | GET    | /scope/{scope}/nodes              | Get nodes for scope                         |
 | GET    | /scope/{scope}/tree               | Get scope node tree                         |
 | GET    | /scope/{scope}/subject/{resource} | Get subject details                         |
-| DELETE | /scope/{scope}/subject/{resource} | Delete subject                              |
-| POST   | /subject/create                   | Create subject                              |
+| DELETE | /scope/{scope}/subject/{resource} | Delete all links related to the subject     |
 | POST   | /rights/grant                     | Grant rights                                |
 | POST   | /rights/revoke                    | Revoke rights                               |
 | POST   | /rights/check                     | Check scoped rights                         |

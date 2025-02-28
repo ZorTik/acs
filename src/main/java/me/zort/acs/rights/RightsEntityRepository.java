@@ -43,4 +43,6 @@ public interface RightsEntityRepository extends JpaRepository<RightsEntity, Righ
             @Param("scopeId") String scopeId,
             @Param("resourceId") String resourceId,
             @Param("inputNode") String inputNode);
+
+    void deleteAllByActorIdOrResourceId(String actorId, String resourceId);
 }

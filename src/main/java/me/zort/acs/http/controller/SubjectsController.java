@@ -22,9 +22,6 @@ public class SubjectsController {
     private final DefinitionsService definitionsService;
     private final AccessRecordService accessRecordService;
 
-    // TODO: Předělat, že přři /rights/grant se automaticky vytvoří subjekty pokud nejsou, aby nebylo potřeba je vytvářet ručně zde
-    // TODO: A tyto endpointy se odstraní
-
     @GetMapping("/scope/{id}/subject/{subject}")
     public ResponseEntityWrapper<SubjectWithScopeDetailsDto> getSubject(@PathVariable("id") String id, @PathVariable("subject") String subjectId) {
         return Optional.ofNullable(definitionsService.getScope(id))
@@ -49,7 +46,7 @@ public class SubjectsController {
                 .orElse(Responses.notFound(MessageConstants.SCOPE_NOT_FOUND));
     }
 
-    @PostMapping("/subject/create")
+    /*@PostMapping("/subject/create")
     public ResponseEntityWrapper<SubjectWithScopeDetailsDto> createSubject(@RequestBody SubjectCreateRequest body) {
         return Optional.ofNullable(definitionsService.getScope(body.getScope()))
                 .map(scope -> {
@@ -61,5 +58,5 @@ public class SubjectsController {
                     }
                 })
                 .orElse(Responses.notFound(MessageConstants.SCOPE_NOT_FOUND));
-    }
+    }*/
 }
