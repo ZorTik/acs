@@ -1,7 +1,7 @@
 scopes:
   - id: test
     subjectBased: true
-    allowedAccessors: [ ]
+    allowedAccessorScopes: []
     nodes:
       - value: test1:test11:test111
         description:

@@ -10,6 +10,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Data
 public class RightsGrantResponse {
-    private Map<String, Boolean> results;
+    private Map<String, GrantResult> results;
 
 }

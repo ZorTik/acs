@@ -20,7 +20,7 @@ public interface Subject extends Scoped {
             throw new ScopeResourceBasedException(scope);
         }
 
-        if (!scope.getAllowedAccessors().contains(this.getScope())) {
+        if (!scope.getAllowedAccessors().contains(this.getScope()) && !scope.equals(this.getScope())) {
             throw new UnsupportedAccess(this, scope);
         }
 

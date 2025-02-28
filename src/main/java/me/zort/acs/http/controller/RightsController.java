@@ -52,35 +52,32 @@ public class RightsController {
 
     @PostMapping("/grant")
     public ResponseEntityWrapper<RightsGrantResponse> grant(@RequestBody RightsGrantRequest request) {
+        Map<String, GrantResult> results = new HashMap<>();
         try {
             Stream<Grant> grantStream = request.grantStream(subjectConverter);
 
-            Map<String, Boolean> results = new HashMap<>();
-
             accessRecordService.transactionallyCreateSubjectsAndPerform(() -> {
-                grantStream
-                        .forEach(grant -> {
-                            boolean result;
-                            try {
-                                accessGrantStrategy.grantAccess(grant);
-                                result = true;
-                            } catch (AccessGrantException | RecordConflict e) {
-                                result = false;
-                            }
-
-                            results.put(grant.getNode(), result);
-                        });
+                grantStream.forEach(grant -> results.put(grant.getNode(), doGrant(grant)));
 
                 return results.values()
                         .stream()
-                        .anyMatch(Boolean::booleanValue);
+                        .anyMatch(GrantResult::isResult);
             });
-
-            return Responses.ok(new RightsGrantResponse(results));
         } catch (ScopeNotFoundException e) {
             return Responses.notFound("scope not found");
-        } catch (TransactionRollbackException e) {
-            return Responses.conflict("all grants failed");
+        } catch (TransactionRollbackException ignored) {
+            // Ignore and instead show results
+        }
+
+        return Responses.ok(new RightsGrantResponse(results));
+    }
+
+    private GrantResult doGrant(Grant grant) {
+        try {
+            accessGrantStrategy.grantAccess(grant);
+            return GrantResult.success();
+        } catch (AccessGrantException | RecordConflict e) {
+            return GrantResult.error(e.getMessage());
         }
     }
 

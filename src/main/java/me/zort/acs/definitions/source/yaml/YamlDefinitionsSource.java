@@ -1,6 +1,7 @@
 package me.zort.acs.definitions.source.yaml;
 
 import me.zort.acs.definitions.source.DefinitionsSource;
+import me.zort.acs.exception.DefinitionsSourceException;
 import me.zort.acs.node.INodeDefinition;
 import me.zort.acs.scope.Scope;
 import org.yaml.snakeyaml.LoaderOptions;
@@ -9,6 +10,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,24 @@ public class YamlDefinitionsSource implements DefinitionsSource {
 
     public YamlDefinitionsSource(InputStream inputStream) {
         this.model = YAML.load(inputStream);
+
+        mapAllowedScopes();
+    }
+
+    private void mapAllowedScopes() {
+        for (YamlDefinitionsModel.ScopeDefinitionModel scopeModel : model.getScopes()) {
+            if (scopeModel.getAllowedAccessorScopes().contains(scopeModel.getId())) {
+                // Prevents stack overflow
+                throw new DefinitionsSourceException(
+                        String.format("Scope '%s' can't allow itself, it's allowed by default.", scopeModel.getId()));
+            }
+
+            scopeModel.setAllowedAccessors(scopeModel.getAllowedAccessorScopes()
+                    .stream()
+                    .map(this::getScope)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet()));
+        }
     }
 
     @Override
@@ -38,5 +58,12 @@ public class YamlDefinitionsSource implements DefinitionsSource {
     @Override
     public Set<? extends Scope> getScopes() {
         return model.getScopes();
+    }
+
+    public Scope getScope(String scopeId) {
+        return model.getScopes()
+                .stream()
+                .filter(scopeModel -> scopeModel.getId().equals(scopeId))
+                .findFirst().orElse(null);
     }
 }
